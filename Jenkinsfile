@@ -1,108 +1,51 @@
-def mvnHome
-def remote = [:]
-    	remote.name = 'deploy'
-    	remote.host = '192.168.33.15'
-    	remote.user = 'root'
-    	remote.password = 'vagrant'
-    	remote.allowAnyHosts = true
 pipeline {
-    
-	agent none
-	
-	stages {
-		//def mvnHome
-		stage ('Preparation') {
-		    agent {
-		        label 'Slave'
-		    }
-		    steps {
-			    git 'https://github.com/venkat09docs/Maven-Java-Project.git'
-			    stash 'Source'
-			    script{
-			        mvnHome = tool 'maven3.6'
-			    }
-		    }
-		}
-		stage ('Static Analysis'){
-			agent {
-				label "Slave"
+    agent {
+        node {
+            label 'slave2'
+        }
+    }
+    tools {
+        maven 'maven3'
+    }
+    stages {
+        stage('checkout') {
+            steps{
+                git 'https://github.com/akhilesh9014/Maven-Java-Project.git'
             }
-			steps {
-				sh "'${mvnHome}/bin/mvn' clean cobertura:cobertura"			
-			}
-			post {
-                success {
-                    cobertura autoUpdateHealth: false, autoUpdateStability: false, coberturaReportFile: 'target/site/cobertura/coverage.xml', conditionalCoverageTargets: '70, 0, 0', failUnhealthy: false, failUnstable: false, lineCoverageTargets: '80, 0, 0', maxNumberOfBuilds: 0, methodCoverageTargets: '80, 0, 0', onlyStable: false, sourceEncoding: 'ASCII', zoomCoverageChart: false
-                }
+        }
+        stage('build') {
+            steps {
+                sh 'mvn clean package'
             }
-		}
-		stage ('build'){
-			agent {
-				label "Slave"
-            }
-			steps {
-				sh "'${mvnHome}/bin/mvn' clean package"			
-			}
-			post {
+            post{
                 always {
                     junit 'target/surefire-reports/*.xml'
-                    archiveArtifacts '**/*.war'
-                    fingerprint '**/*.war'
+                    archiveArtifacts artifacts: '**/*.war', onlySuccessful: true
                 }
             }
-		}
-		stage('Deploy-to-Stage') {
-		     agent {
-		        label 'Slave'
-		    }
-		    //SSH-Steps-Plugin should be installed
-		    //SCP-Publisher Plugin (Optional)
-		    steps {
-		        //sshScript remote: remote, script: "abc.sh"  	
-			sshPut remote: remote, from: 'target/java-maven-1.0-SNAPSHOT.war', into: '/root/workspace/stagingServer/webapps'		        
-		    }
-    	}
-    	stage ('Integration-Test') {
-			agent {
-				label "Slave"
+        }
+        stage('upload artifacts') {
+            steps {
+                sh 'mvn clean deploy'
             }
-			steps {
-				parallel (
-					'integration': { 
-						unstash 'Source'
-						sh "'${mvnHome}/bin/mvn' clean verify"
-      							  						
-					}, 'quality': {
-						unstash 'Source'
-						sh "'${mvnHome}/bin/mvn' clean test"
-					}
-				)
-			}
-		}
-		stage ('approve') {
-			agent {
-				label "Slave"
+
+        }
+        stage('deploy') {
+            steps {
+                deploy adapters: [tomcat8(path: '', url: 'http://192.168.33.13:8555/')], contextPath: 'hebbel', war: '**/*.war'
             }
-			steps {
-				timeout(time: 7, unit: 'DAYS') {
-					input message: 'Do you want to deploy?', submitter: 'admin'
-				}
-			}
-		}
-		stage ('Prod-Deploy') {
-			agent {
-				label "Slave"
+        }
+        stage('integration-test') {
+            sh 'mvn clean verify'
+        }
+        stage('production') {
+            steps {
+                 timeout(time: 10, unit: 'SECONDS') {
+			    input message: 'Do you want to continue?', submitter: 'Administrator'
+
             }
-			steps {
-				unstash 'Source'
-				sh "'${mvnHome}/bin/mvn' clean package"				
-			}
-			post {
-				always {
-					archiveArtifacts '**/*.war'
-				}
-			}
-		}
-    	
-	}	
+        }
+        
+    }
+
 }
