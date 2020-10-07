@@ -29,3 +29,18 @@ This example follows the following basic conventions:
 __resides in:__ | `src/test/java/*Test.java` | `src/test/java/*IT.java`
 __executes in Maven phase:__ | test | verify
 __handled by Maven plugin:__ | [surefire](http://maven.apache.org/surefire/maven-surefire-plugin/) | [failsafe](http://maven.apache.org/surefire/maven-failsafe-plugin/)
+
+
+
+ <distributionManagement>
+    <snapshotRepository>
+      <id>deployment</id>
+      <name>my snapshot repository</name>
+      <url>http://192.168.33.13:8555/nexus/content/repositories/snapshots/</url>
+    </snapshotRepository>
+    <repository>
+      <id>deployment</id>
+      <name>my repository</name>
+      <url>http://192.168.33.13:8555/nexus/content/repositories/releases/</url>
+    </repository>
+  </distributionManagement>
