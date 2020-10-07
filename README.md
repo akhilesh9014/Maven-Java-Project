@@ -44,3 +44,16 @@ __handled by Maven plugin:__ | [surefire](http://maven.apache.org/surefire/maven
       <url>http://192.168.33.13:8555/nexus/content/repositories/releases/</url>
     </repository>
   </distributionManagement>
+  
+  
+  
+  
+  steps {
+    container('maven') {
+      sh "cp /root/.m2/settings.xml settings.xml"
+      sh "sed -i 's/>nexus/>local-nexus/g' settings.xml"
+      
+      // ensure we're not on a detached head
+      sh "git checkout master"
+      ... other steps ...
+      sh "mvn -s settings.xml clean deploy"
