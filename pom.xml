@@ -126,4 +126,12 @@
       </plugin>
     </plugins>
   </reporting>
+    <distributionManagement>
+        <repository>
+            <id>DLP_Release</id>
+            <name>DLP_Release</name>
+            <url>http://192.168.5.195:8081/repository/DLP_Release/</url>
+            <layout>default</layout>
+        </repository>
+    </distributionManagement>
 </project>
