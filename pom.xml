@@ -128,14 +128,14 @@
   </reporting>
     <distributionManagement>
 		<repository>
-			<id>local-nexus</id>
+			<id>nexus123</id>
 			<layout>default</layout>
 			<url>http://192.168.5.195:8081/repository/DLP_Release/</url>
 		</repository>
 		<snapshotRepository>
-			<id>local-nexus</id>
+			<id>nexus123</id>
                         <layout>default</layout>
-			<url>http://192.168.5.195:8081/repository/maven-releases/</url>
+			<url>http://192.168.5.195:8081/repository/maven-snapshots/</url>
 		</snapshotRepository>
     </distributionManagement>
 </project>
