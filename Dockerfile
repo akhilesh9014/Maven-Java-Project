@@ -5,6 +5,7 @@ MAINTAINER rns@rnstech.com
 RUN yum update -y
 RUN yum -y install java
 RUN java -version
+RUN yum install wget -y
 
 #RUN mkdir /opt/tomcat/
 
