@@ -10,12 +10,13 @@ RUN yum install wget -y
 #RUN mkdir /opt/tomcat/
 
 WORKDIR /opt
-RUN wget http://mirrors.estointernet.in/apache/tomcat/tomcat-8/v8.5.43/bin/apache-tomcat-8.5.43.tar.gz
-RUN tar xvf apache-tomcat-8.5.43.tar.gz -C /opt/
-RUN cp -R /opt/apache-tomcat-8.5.43/ /opt/tomcat
+RUN curl -O http://apachemirror.wuchna.com/tomcat/tomcat-8/v8.5.58/bin/apache-tomcat-8.5.58.tar.gz
+RUN sudo tar xvf apache-tomcat-8.5.58.tar.gz -C /opt/
+RUN mv /opt/apache-tomcat-8.5.58 tomcat-8
+RUN cp -R /opt/tomcat-8/ /opt/tomcat
 
 WORKDIR /opt/tomcat/webapps
-COPY target/*.war /opt/tomcat/webapps/webapp.war
+COPY target/*.war /opt/tomcat/webapps/visitagain.war
 
 EXPOSE 8080
 
