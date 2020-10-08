@@ -135,7 +135,7 @@
 		<snapshotRepository>
 			<id>nexus123</id>
                         <layout>default</layout>
-			<url>http://192.168.5.195:8081/repository/maven-snapshots/</url>
+			<url>http://192.168.5.195:8081/repository/DLP_Snapshots/</url>
 		</snapshotRepository>
     </distributionManagement>
 </project>
