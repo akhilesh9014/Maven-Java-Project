@@ -16,6 +16,6 @@ RUN cp -R /opt/apache-tomcat-8.5.43/ /opt/tomcat
 WORKDIR /opt/tomcat/webapps
 COPY target/*.war /opt/tomcat/webapps/webapp.war
 
-EXPOSE 8080
+EXPOSE 8085
 
 ENTRYPOINT ["/opt/tomcat/bin/catalina.sh", "run"]
