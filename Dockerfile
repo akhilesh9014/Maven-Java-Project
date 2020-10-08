@@ -11,7 +11,7 @@ RUN yum install wget -y
 
 WORKDIR /opt
 RUN curl -O http://apachemirror.wuchna.com/tomcat/tomcat-8/v8.5.58/bin/apache-tomcat-8.5.58.tar.gz
-RUN sudo tar xvf apache-tomcat-8.5.58.tar.gz -C /opt/
+RUN tar xvf apache-tomcat-8.5.58.tar.gz -C /opt/
 RUN mv /opt/apache-tomcat-8.5.58 tomcat-8
 RUN cp -R /opt/tomcat-8/ /opt/tomcat
 
