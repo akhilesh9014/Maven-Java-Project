@@ -130,7 +130,7 @@
 		<repository>
 			<id>nexus123</id>
 			<layout>default</layout>
-			<url>http://192.168.5.195:8081/repository/DLP_Release/</url>
+			<url>http://192.168.5.195:8084/repository/DLP-Maven-Release/</url>
 		</repository>
 		<snapshotRepository>
 			<id>nexus123</id>
