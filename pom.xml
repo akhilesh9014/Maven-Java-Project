@@ -130,7 +130,7 @@
 		<repository>
 			<id>nexus8081</id>
 			<layout>default</layout>
-			<url>http://192.168.5.195:8081/repository/DLP_Release/</url>
+			<url>http://192.168.5.195:8081/repository/DLP_Releases/</url>
 		</repository>
 		<snapshotRepository>
 			<id>nexus8081</id>
